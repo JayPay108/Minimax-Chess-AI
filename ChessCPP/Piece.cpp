@@ -1,5 +1,4 @@
 #include "Piece.h"
-
 #include <string>
 
 
@@ -62,6 +61,7 @@ bool Piece::isValidMove(Move *move, Board board)
 	return validMove;
 }
 
+// Virtual fuctions to be defined by child piece classes
 void Piece::setValue() {}
 void Piece::getMoves(MoveStack* moves, Board board) {}
 

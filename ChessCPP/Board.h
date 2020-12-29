@@ -7,7 +7,6 @@ public:
 	void print();
 	void makeMove(Move* move);
 	bool undoMove();
-	Piece *operator[](int row);
 
 	Piece **m_pcBoard;
 	Color m_cTurn;
