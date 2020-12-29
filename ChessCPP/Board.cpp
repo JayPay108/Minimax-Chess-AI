@@ -1,15 +1,12 @@
 #include "Board.h"
-#include "Piece.h"
 
 Board::Board()
 {
-	for (int row = 0; row < 7; row++)
+	for (int row = 0; row < 8; row++)
 	{
-		m_pcBoard[row] = new Piece[8];
-
-		for (int col = 0; col < 7; col++)
+		for (int col = 0; col < 8; col++)
 		{
-			m_pcBoard[row][col] = Piece('-', Index(row, col), white);
+			m_pcBoard[row][col] = nullptr;
 		}
 	}
 

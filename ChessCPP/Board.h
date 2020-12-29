@@ -1,4 +1,5 @@
 #pragma once
+#include "Piece.h"
 
 class Board
 {
@@ -8,7 +9,7 @@ public:
 	void makeMove(Move* move);
 	bool undoMove();
 
-	Piece **m_pcBoard;
+	Piece *m_pcBoard[8][8];
 	Color m_cTurn;
 	MoveStack m_msMoveHistory;
 };
