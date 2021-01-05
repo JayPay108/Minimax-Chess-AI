@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="CharFunctions.cpp" />
     <ClCompile Include="Index.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Move.cpp" />
@@ -147,10 +148,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="CharFunctions.h" />
     <ClInclude Include="Index.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveStack.h" />
     <ClInclude Include="Piece.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="StartingBoard.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

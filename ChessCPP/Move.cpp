@@ -1,5 +1,9 @@
 #include "Move.h"
 
+Move::Move()
+{
+}
+
 Move::Move(Index startIndex, Index endIndex)
 {
 	m_iStartIndex = startIndex;
@@ -11,7 +15,7 @@ Move::Move(Index startIndex, Index endIndex)
 	m_pNext = nullptr;
 }
 
-Move::Move(Index startIndex, Index endIndex, Piece *attackedPiece)
+Move::Move(Index startIndex, Index endIndex, Piece* attackedPiece)
 {
 	m_iStartIndex = startIndex;
 	m_iEndIndex = endIndex;
@@ -20,6 +24,30 @@ Move::Move(Index startIndex, Index endIndex, Piece *attackedPiece)
 	m_bCastle = false;
 
 	m_pNext = nullptr;
+}
+
+bool Move::generateMove(std::string input, Piece* board[][8])
+{
+	if (input.length() < 4)
+	{
+		return false;
+	}
+
+	input[0] = toLower(input[0]);
+	input[2] = toLower(input[2]);
+
+	if (input[0] < 97 || input[0] > 104 || input[2] < 97 || input[2] > 104 ||
+		input[1] < 49 || input[1] > 56 || input[3] < 49 || input[3] > 56)
+	{
+		return false;
+	}
+
+	m_iStartIndex = Index(-input[1] + 56, input[0] - 97);
+	m_iEndIndex = Index(-input[3] + 56, input[2] - 97);
+
+	m_pcAttackedPiece = board[m_iEndIndex.m_iRow][m_iEndIndex.m_iCol];
+
+	return true;
 }
 
 bool Move::operator==(Move move2)

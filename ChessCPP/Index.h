@@ -10,3 +10,4 @@ public:
 	int m_iRow;
 	int m_iCol;
 };
+

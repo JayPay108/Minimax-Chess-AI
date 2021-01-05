@@ -1,70 +1,68 @@
 #pragma once
 
-/*
-MoveStack will, in most cases, be used as a pointer to easily clear it and pass trough functions
-Piece needs an isValidMove function to pass into the attempted move instead of a getAllMoves function
-A getAllMoves function is still needed, but only to pass into the getAllMoves board function...
-*/
-
 #include "MoveStack.h"
-#include "Board.h"
 
-enum Color{white, black};
+enum Color { white, black };
 
 class Piece
 {
 public:
-	Piece();
-	Piece(char name, Index index, Color color);
-	bool isValidMove(Move *move, Board board);
+	explicit Piece(char name, Index index, Color color);
+	bool isValidMove(Move* move, Piece* board[][8]);
 	virtual void setValue();
-	virtual void getMoves(MoveStack *moves, Board board);
+	virtual void getMoves(MoveStack* moves, Piece* board[][8]);
 
 	char m_cName;
 	Index m_iIndex;
 	Color m_cColor;
 	int m_iValue;
-	bool m_bHasMoved;
+	int m_iNumOfMoves;
 };
 
 class Pawn : public Piece
 {
 public:
+	using Piece::Piece;
 	void setValue();
-	void getMoves(MoveStack *moves, Board board);
+	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
 class Rook : public Piece
 {
 public:
+	using Piece::Piece;
 	void setValue();
-	void getMoves(MoveStack* moves, Board board);
+	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
 class Knight : public Piece
 {
 public:
+	using Piece::Piece;
 	void setValue();
-	void getMoves(MoveStack* moves, Board board);
+	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
 class Bishop : public Piece
 {
 public:
+	using Piece::Piece;
 	void setValue();
-	void getMoves(MoveStack* moves, Board board);
+	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
 class Queen : public Piece
 {
 public:
+	using Piece::Piece;
 	void setValue();
-	void getMoves(MoveStack* moves, Board board);
+	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
 class King : public Piece
 {
 public:
+	using Piece::Piece;
 	void setValue();
-	void getMoves(MoveStack* moves, Board board);
+	void getMoves(MoveStack* moves, Piece* board[][8]);
 };

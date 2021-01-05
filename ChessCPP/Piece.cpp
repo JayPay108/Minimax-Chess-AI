@@ -2,35 +2,6 @@
 #include <string>
 
 
-char toLower(char c)
-{
-	if (c < 65 || c > 90)
-	{
-		return c;
-	}
-
-	return c += 32;
-}
-
-char toUpper(char c)
-{
-	if (c < 97 || c > 122)
-	{
-		return c;
-	}
-
-	return c -= 32;
-}
-
-Piece::Piece()
-{
-	m_cName = '-';
-	m_iIndex = Index();
-	m_cColor = white;
-	m_iValue = 0;
-	m_bHasMoved = false;
-}
-
 Piece::Piece(char name, Index index, Color color)
 {
 	if (color == white)
@@ -44,14 +15,14 @@ Piece::Piece(char name, Index index, Color color)
 
 	m_iIndex = index;
 	m_cColor = color;
-	m_bHasMoved = false;
+	m_iNumOfMoves = 0;
 
 	setValue();
 }
 
-bool Piece::isValidMove(Move *move, Board board)
+bool Piece::isValidMove(Move* move, Piece* board[][8])
 {
-	MoveStack *allValidMoves;
+	MoveStack* allValidMoves = new MoveStack;
 
 	getMoves(allValidMoves, board);
 
@@ -63,7 +34,7 @@ bool Piece::isValidMove(Move *move, Board board)
 
 // Virtual fuctions to be defined by child piece classes
 void Piece::setValue() {}
-void Piece::getMoves(MoveStack* moves, Board board) {}
+void Piece::getMoves(MoveStack* moves, Piece* board[][8]) {}
 
 // PAWN
 void Pawn::setValue()
@@ -71,7 +42,7 @@ void Pawn::setValue()
 	m_iValue = 1;
 }
 
-void Pawn::getMoves(MoveStack* moves, Board board)
+void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 {
 	int currentRow;
 	int currentCol;
@@ -97,7 +68,7 @@ void Pawn::getMoves(MoveStack* moves, Board board)
 			break;
 		}
 
-		if (board.m_pcBoard[currentRow][m_iIndex.m_iCol].m_cName != '-')
+		if (board[currentRow][m_iIndex.m_iCol] != nullptr)
 		{
 			break;
 		}
@@ -107,14 +78,14 @@ void Pawn::getMoves(MoveStack* moves, Board board)
 
 		moves->addMove(new Move(startPos, endPos));
 
-		if (m_bHasMoved)
+		if (m_iNumOfMoves > 0)
 		{
 			break;
 		}
 	}
 
-	Piece attackedPiece;
-	Move *move;
+	Piece* attackedPiece;
+	Move* move;
 
 	for (int i = -1; i < 2; i += 2)
 	{
@@ -130,14 +101,14 @@ void Pawn::getMoves(MoveStack* moves, Board board)
 			break;
 		}
 
-		attackedPiece = board.m_pcBoard[currentRow][currentCol];
+		attackedPiece = board[currentRow][currentCol];
 
-		if (attackedPiece.m_cName != '-' && attackedPiece.m_cColor != m_cColor)
+		if (attackedPiece != nullptr && attackedPiece->m_cColor != m_cColor)
 		{
 			startPos = m_iIndex;
 			endPos = Index(currentRow, currentCol);
 
-			moves->addMove(new Move(startPos, endPos, &attackedPiece));
+			moves->addMove(new Move(startPos, endPos, attackedPiece));
 		}
 	}
 }
@@ -148,7 +119,7 @@ void Rook::setValue()
 	m_iValue = 5;
 }
 
-void Rook::getMoves(MoveStack* moves, Board board)
+void Rook::getMoves(MoveStack* moves, Piece* board[][8])
 {
 	int directions[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
 
@@ -156,7 +127,7 @@ void Rook::getMoves(MoveStack* moves, Board board)
 	int col;
 	Index startPos;
 	Index endPos;
-	Piece attackedPiece;
+	Piece* attackedPiece;
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -166,18 +137,18 @@ void Rook::getMoves(MoveStack* moves, Board board)
 			col = m_iIndex.m_iCol + (directions[i][1] * j);
 			startPos = m_iIndex;
 			endPos = Index(row, col);
-			
+
 			if (row < 0 || row > 7 || col < 0 || col > 7)
 			{
 				break;
 			}
 
-			if (board[row][col].m_cName != '-')
+			if (board[row][col] != nullptr)
 			{
-				if (board[row][col].m_cColor != m_cColor)
+				if (board[row][col]->m_cColor != m_cColor)
 				{
 					attackedPiece = board[row][col];
-					moves->addMove(new Move(startPos, endPos, &attackedPiece));
+					moves->addMove(new Move(startPos, endPos, attackedPiece));
 				}
 
 				break;
@@ -194,7 +165,7 @@ void Bishop::setValue()
 	m_iValue = 3;
 }
 
-void Bishop::getMoves(MoveStack* moves, Board board)
+void Bishop::getMoves(MoveStack* moves, Piece* board[][8])
 {
 	int directions[4][2] = { {-1, -1}, {-1, 1}, {1, -1}, {1, 1} };
 
@@ -202,7 +173,7 @@ void Bishop::getMoves(MoveStack* moves, Board board)
 	int col;
 	Index startPos;
 	Index endPos;
-	Piece attackedPiece;
+	Piece* attackedPiece;
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -218,12 +189,12 @@ void Bishop::getMoves(MoveStack* moves, Board board)
 				break;
 			}
 
-			if (board[row][col].m_cName != '-')
+			if (board[row][col] != nullptr)
 			{
-				if (board[row][col].m_cColor != m_cColor)
+				if (board[row][col]->m_cColor != m_cColor)
 				{
 					attackedPiece = board[row][col];
-					moves->addMove(new Move(startPos, endPos, &attackedPiece));
+					moves->addMove(new Move(startPos, endPos, attackedPiece));
 				}
 
 				break;
@@ -240,7 +211,7 @@ void Knight::setValue()
 	m_iValue = 3;
 }
 
-void Knight::getMoves(MoveStack* moves, Board board)
+void Knight::getMoves(MoveStack* moves, Piece* board[][8])
 {
 	int directions[8][2] = { {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1} };
 
@@ -248,7 +219,7 @@ void Knight::getMoves(MoveStack* moves, Board board)
 	int col;
 	Index startPos;
 	Index endPos;
-	Piece attackedPiece;
+	Piece* attackedPiece;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -262,12 +233,12 @@ void Knight::getMoves(MoveStack* moves, Board board)
 			break;
 		}
 
-		if (board[row][col].m_cName != '-')
+		if (board[row][col] != nullptr)
 		{
-			if (board[row][col].m_cColor != m_cColor)
+			if (board[row][col]->m_cColor != m_cColor)
 			{
 				attackedPiece = board[row][col];
-				moves->addMove(new Move(startPos, endPos, &attackedPiece));
+				moves->addMove(new Move(startPos, endPos, attackedPiece));
 			}
 
 			continue;
@@ -283,7 +254,7 @@ void Queen::setValue()
 	m_iValue = 9;
 }
 
-void Queen::getMoves(MoveStack* moves, Board board)
+void Queen::getMoves(MoveStack* moves, Piece* board[][8])
 {
 	int directions[8][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1} };
 
@@ -291,7 +262,7 @@ void Queen::getMoves(MoveStack* moves, Board board)
 	int col;
 	Index startPos;
 	Index endPos;
-	Piece attackedPiece;
+	Piece* attackedPiece;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -307,12 +278,12 @@ void Queen::getMoves(MoveStack* moves, Board board)
 				break;
 			}
 
-			if (board[row][col].m_cName != '-')
+			if (board[row][col] != nullptr)
 			{
-				if (board[row][col].m_cColor != m_cColor)
+				if (board[row][col]->m_cColor != m_cColor)
 				{
 					attackedPiece = board[row][col];
-					moves->addMove(new Move(startPos, endPos, &attackedPiece));
+					moves->addMove(new Move(startPos, endPos, attackedPiece));
 				}
 
 				break;
@@ -329,7 +300,7 @@ void King::setValue()
 	m_iValue = 3;
 }
 
-void King::getMoves(MoveStack* moves, Board board)
+void King::getMoves(MoveStack* moves, Piece* board[][8])
 {
 	int directions[8][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1} };
 
@@ -337,7 +308,7 @@ void King::getMoves(MoveStack* moves, Board board)
 	int col;
 	Index startPos;
 	Index endPos;
-	Piece attackedPiece;
+	Piece* attackedPiece;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -351,12 +322,12 @@ void King::getMoves(MoveStack* moves, Board board)
 			break;
 		}
 
-		if (board[row][col].m_cName != '-')
+		if (board[row][col] != nullptr)
 		{
-			if (board[row][col].m_cColor != m_cColor)
+			if (board[row][col]->m_cColor != m_cColor)
 			{
 				attackedPiece = board[row][col];
-				moves->addMove(new Move(startPos, endPos, &attackedPiece));
+				moves->addMove(new Move(startPos, endPos, attackedPiece));
 			}
 
 			continue;
@@ -365,4 +336,3 @@ void King::getMoves(MoveStack* moves, Board board)
 		moves->addMove(new Move(startPos, endPos));
 	}
 }
-
