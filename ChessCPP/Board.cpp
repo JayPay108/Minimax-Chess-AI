@@ -120,29 +120,25 @@ bool Board::isValidMove(Move *move)
 
 void Board::addPiece(char name, Index index, Color color)
 {
+	name = toLower(name);
+
 	switch (name)
 	{
-	case 'P':
 	case 'p':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Pawn(name, index, color);
 		break;
-	case 'R':
 	case 'r':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Rook(name, index, color);
 		break;
-	case 'N':
 	case 'n':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Knight(name, index, color);
 		break;
-	case 'B':
 	case 'b':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Bishop(name, index, color);
 		break;
-	case 'Q':
 	case 'q':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Queen(name, index, color);
 		break;
-	case 'K':
 	case 'k':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new King(name, index, color);
 		break;

@@ -1,8 +1,2 @@
-﻿  Board.cpp
-  Main.cpp
-  Move.cpp
-  MoveStack.cpp
-  Piece.cpp
-C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\Piece.cpp(88,8): warning C4101: 'move': unreferenced local variable
-  Generating Code...
+﻿  Main.cpp
   ChessCPP.vcxproj -> C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\Debug\ChessCPP.exe

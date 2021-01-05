@@ -3,10 +3,7 @@
 #include <string>
 #include <iomanip>
 
-char lower(char c);
-std::string toLower(std::string string);
-int toNum(char c);
-Move toMove(std::string input);
+void clearConsole();
 
 int main()
 {
@@ -17,7 +14,9 @@ int main()
 
 	while (true)
 	{
+		clearConsole();
 		board.print();
+		std::cout << std::endl;
 
 		do
 		{
@@ -50,6 +49,11 @@ int main()
 		}
 	}
 
-	while (true) {} // will crash as soon as program finishes????????????????
 	return 0;
+}
+
+
+void clearConsole()
+{
+	std::cout << std::string(10, '\n') << std::endl;
 }
