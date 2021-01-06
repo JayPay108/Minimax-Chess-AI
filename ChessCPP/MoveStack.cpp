@@ -3,17 +3,12 @@
 MoveStack::MoveStack()
 {
 	m_pHead = nullptr;
+	m_iSize = 0;
 }
 
 MoveStack::~MoveStack()
 {
-	Move* removedMove = removeMove();
-
-	while (removedMove != nullptr)
-	{
-		delete removedMove;
-		removedMove = removeMove();
-	}
+	empty();
 }
 
 bool MoveStack::isEmpty()
@@ -25,6 +20,8 @@ void MoveStack::addMove(Move* move)
 {
 	move->m_pNext = m_pHead;
 	m_pHead = move;
+
+	m_iSize++;
 }
 
 Move* MoveStack::removeMove()
@@ -35,6 +32,8 @@ Move* MoveStack::removeMove()
 	{
 		m_pHead = m_pHead->m_pNext;
 	}
+
+	m_iSize--;
 
 	return removedMove;
 }
@@ -54,4 +53,15 @@ bool MoveStack::hasMove(Move* move)
 	}
 
 	return false;
+}
+
+void MoveStack::empty()
+{
+	Move* removedMove = removeMove();
+
+	while (removedMove != nullptr)
+	{
+		delete removedMove;
+		removedMove = removeMove();
+	}
 }

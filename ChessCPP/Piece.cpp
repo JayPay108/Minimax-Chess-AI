@@ -1,5 +1,6 @@
 #include "Piece.h"
 #include <string>
+#include <iostream>
 
 
 Piece::Piece(char name, Index index, Color color)
@@ -7,10 +8,12 @@ Piece::Piece(char name, Index index, Color color)
 	if (color == white)
 	{
 		m_cName = toLower(name);
+		m_iDirection = -1;
 	}
 	else
 	{
 		m_cName = toUpper(name);
+		m_iDirection = 1;
 	}
 
 	m_iIndex = index;
@@ -50,18 +53,9 @@ void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 	Index endPos;
 	int direction;
 
-	if (m_cColor == white)
-	{
-		direction = -1;
-	}
-	else
-	{
-		direction = 1;
-	}
-
 	for (int i = 1; i < 3; i++)
 	{
-		currentRow = m_iIndex.m_iRow + (direction * i);
+		currentRow = m_iIndex.m_iRow + (m_iDirection * i);
 
 		if (currentRow < 0 || currentRow > 7)
 		{
@@ -85,11 +79,10 @@ void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 	}
 
 	Piece* attackedPiece;
-	Move* move;
 
 	for (int i = -1; i < 2; i += 2)
 	{
-		currentRow = m_iIndex.m_iRow + direction;
+		currentRow = m_iIndex.m_iRow + m_iDirection;
 		currentCol = m_iIndex.m_iCol + i;
 
 		if (currentCol < 0 || currentCol > 7)
@@ -230,7 +223,7 @@ void Knight::getMoves(MoveStack* moves, Piece* board[][8])
 
 		if (row < 0 || row > 7 || col < 0 || col > 7)
 		{
-			break;
+			continue;
 		}
 
 		if (board[row][col] != nullptr)

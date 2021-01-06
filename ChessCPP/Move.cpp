@@ -2,6 +2,13 @@
 
 Move::Move()
 {
+	m_iStartIndex = Index();
+	m_iEndIndex = Index();
+	m_pcAttackedPiece = nullptr;
+	m_bPromotion = false;
+	m_bCastle = false;
+
+	m_pNext = nullptr;
 }
 
 Move::Move(Index startIndex, Index endIndex)

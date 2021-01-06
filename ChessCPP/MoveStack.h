@@ -11,6 +11,8 @@ public:
 	void addMove(Move* move);
 	Move* removeMove();
 	bool hasMove(Move* move);
+	void empty();
 
 	Move* m_pHead;
+	int m_iSize;
 };

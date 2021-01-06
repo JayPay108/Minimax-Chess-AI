@@ -1,15 +1,19 @@
 #pragma once
 
 #include "Piece.h"
+#include "Config.h"
 
 class Board
 {
 public:
 	Board();
 	void print();
+	void swapTurn();
 	void makeMove(Move* move);
-	bool undoMove();
+	Move* undoMove();
 	bool isValidMove(Move* move);
+	void getMoves(MoveStack* moves);
+	int evaluate();
 
 	Piece* m_pcBoard[8][8];
 	Color m_cTurn;

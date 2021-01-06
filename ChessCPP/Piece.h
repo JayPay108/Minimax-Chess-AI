@@ -17,6 +17,7 @@ public:
 	Color m_cColor;
 	int m_iValue;
 	int m_iNumOfMoves;
+	int m_iDirection;
 };
 
 class Pawn : public Piece

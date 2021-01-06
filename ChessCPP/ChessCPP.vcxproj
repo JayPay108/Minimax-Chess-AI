@@ -142,6 +142,7 @@
     <ClCompile Include="CharFunctions.cpp" />
     <ClCompile Include="Index.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MiniMax.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MoveStack.cpp" />
     <ClCompile Include="Piece.cpp" />
@@ -149,7 +150,9 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="CharFunctions.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Index.h" />
+    <ClInclude Include="MiniMax.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveStack.h" />
     <ClInclude Include="Piece.h" />

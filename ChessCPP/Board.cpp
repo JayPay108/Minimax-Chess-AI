@@ -74,6 +74,18 @@ void Board::print()
 		<< "    a b c d e f g h" << std::endl;
 }
 
+void Board::swapTurn()
+{
+	if (m_cTurn == white)
+	{
+		m_cTurn = black;
+	}
+	else
+	{
+		m_cTurn = white;
+	}
+}
+
 void Board::makeMove(Move* move)
 {
 	Piece* movedPiece = m_pcBoard[move->m_iStartIndex.m_iRow][move->m_iStartIndex.m_iCol];
@@ -89,14 +101,15 @@ void Board::makeMove(Move* move)
 	m_msMoveHistory.addMove(move);
 }
 
-bool Board::undoMove()
+Move* Board::undoMove()
 {
-	if (m_msMoveHistory.isEmpty())
+	Move* lastMove = m_msMoveHistory.removeMove();
+
+	if (lastMove == nullptr)
 	{
-		return false;
+		return nullptr;
 	}
 
-	Move* lastMove = m_msMoveHistory.removeMove();
 	Piece* movedPiece = m_pcBoard[lastMove->m_iEndIndex.m_iRow][lastMove->m_iEndIndex.m_iCol];
 
 	m_pcBoard[lastMove->m_iStartIndex.m_iRow][lastMove->m_iStartIndex.m_iCol] = movedPiece;
@@ -107,15 +120,159 @@ bool Board::undoMove()
 
 	movedPiece->m_iNumOfMoves--;
 
-	delete lastMove;
-	return true;
+	return lastMove;
 }
 
 bool Board::isValidMove(Move *move)
 {
 	Piece* piece = m_pcBoard[move->m_iStartIndex.m_iRow][move->m_iStartIndex.m_iCol];
 
+	if (piece->m_cColor != m_cTurn)
+	{
+		return false;
+	}
+
 	return piece->isValidMove(move, m_pcBoard);
+}
+
+void Board::getMoves(MoveStack* moves)
+{
+	Piece* piece;
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = 0; col < 8; col++)
+		{
+			piece = m_pcBoard[row][col];
+
+			if (piece == nullptr || piece->m_cColor != m_cTurn)
+			{
+				continue;
+			}
+
+			piece->getMoves(moves, m_pcBoard);
+		}
+	}
+}
+
+int Board::evaluate()
+{
+	int boardValue = 0;
+
+	// Summing up all the piece values
+	int pieceValues = 0;
+
+	Piece* piece;
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = 0; col < 8; col++)
+		{
+			piece = m_pcBoard[row][col];
+
+			if (piece == nullptr)
+			{
+				continue;
+			}
+
+			if (piece->m_cColor == m_cTurn)
+			{
+				pieceValues += piece->m_iValue;
+			}
+			else
+			{
+				pieceValues -= piece->m_iValue;
+			}
+		}
+	}
+
+	boardValue += (pieceValues * DEFENSE);
+
+	// Summing up all valid moves
+	MoveStack* moves = new MoveStack;
+	int numOfMoves;
+	int enemyNumOfMoves;
+
+	getMoves(moves);
+	numOfMoves = moves->m_iSize;
+	swapTurn();
+
+	moves = new MoveStack;
+	getMoves(moves);
+	enemyNumOfMoves = moves->m_iSize;
+	swapTurn();
+
+	boardValue += ((numOfMoves - enemyNumOfMoves) * AGRESSIVENESS);
+	delete moves;
+
+	// Pawn stuff
+	int blockedPawns = 0;
+	int enemyBlockedPawns = 0;
+
+	int pawnsPerRow[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	int enemyPawnsPerRow[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+	int nextRow;
+	for (int col = 0; col < 8; col++)
+	{
+		for (int row = 0; row < 8; row++)
+		{
+			piece = m_pcBoard[row][col];
+
+			if (piece != nullptr && piece->m_iValue == 1)
+			{
+				if (piece->m_cColor == m_cTurn)
+				{
+					pawnsPerRow[row]++;
+
+					nextRow = row + piece->m_iDirection;
+					if (m_pcBoard[nextRow][col] != nullptr)
+					{
+						blockedPawns++;
+					}
+				}
+				else
+				{
+					enemyPawnsPerRow[row]++;
+
+					nextRow = row + piece->m_iDirection;
+					if (m_pcBoard[nextRow][col] != nullptr)
+					{
+						enemyBlockedPawns++;
+					}
+				}
+			}
+		}
+	}
+
+	int isolatedPawns = 0;
+	int enemyIsolatedPawns = 0;
+
+	int doubledPawns = 0;
+	int enemyDoubledPawns = 0;
+
+	for (int row = 0; row < 8; row++)
+	{
+		if (pawnsPerRow[row] > 1)
+		{
+			doubledPawns++;
+		}
+		if (enemyPawnsPerRow[row] > 1)
+		{
+			enemyDoubledPawns++;
+		}
+
+		if ((row == 0 || pawnsPerRow[row - 1] == 0) && (row == 7 || pawnsPerRow[row + 1] == 0))
+		{
+			isolatedPawns++;
+		}
+		if ((row == 0 || enemyPawnsPerRow[row - 1] == 0) && (row == 7 || enemyPawnsPerRow[row + 1] == 0))
+		{
+			enemyIsolatedPawns++;
+		}
+	}
+
+	boardValue -= (((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns)) * PAWNSTUFF);
+
+	return boardValue;
 }
 
 void Board::addPiece(char name, Index index, Color color)
