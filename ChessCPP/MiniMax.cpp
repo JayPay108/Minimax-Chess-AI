@@ -11,6 +11,7 @@ MiniMax::MiniMax(int depth)
 
 Move* MiniMax::getNextMove(Board* board)
 {
+	m_mBestMove = Move(); // debug
 	searchMoves(board, true, m_iDepth, -9999, 9999);
 	return &m_mBestMove;
 }
@@ -58,8 +59,6 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 
 			currentMove = moves->removeMove();
 		}
-
-		delete moves; // Probably not needed?
 		
 		board->swapTurn();
 		return minValue;
@@ -84,6 +83,7 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 
 				if (currentDepth == DEPTH)
 				{
+					std::cout << "replacing move" << std::endl; // debug
 					m_mBestMove = *currentMove;
 				}
 			}
@@ -102,8 +102,6 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 
 			currentMove = moves->removeMove();
 		}
-
-		delete moves; // Probably not needed?
 
 		return maxValue;
 	}

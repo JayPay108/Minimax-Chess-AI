@@ -93,8 +93,14 @@ void Board::makeMove(Move* move)
 	m_pcBoard[move->m_iStartIndex.m_iRow][move->m_iStartIndex.m_iCol] = nullptr;
 	m_pcBoard[move->m_iEndIndex.m_iRow][move->m_iEndIndex.m_iCol] = movedPiece;
 
+	if (movedPiece == nullptr)
+	{
+		std::cout << move->m_iStartIndex.m_iRow << "   " << move->m_iStartIndex.m_iCol << std::endl;
+	}
+
 	movedPiece->m_iIndex.m_iRow = move->m_iEndIndex.m_iRow;
 	movedPiece->m_iIndex.m_iCol = move->m_iEndIndex.m_iCol;
+
 
 	movedPiece->m_iNumOfMoves++;
 
@@ -195,7 +201,7 @@ int Board::evaluate()
 	numOfMoves = moves->m_iSize;
 	swapTurn();
 
-	delete moves; // IS THIS IT
+	delete moves; // THE LACK OF THIS LINE CAUSED ME A WEEK OF STRESS
 	moves = new MoveStack;
 	getMoves(moves);
 	enemyNumOfMoves = moves->m_iSize;

@@ -12,6 +12,7 @@ public:
 	Move(Index startIndex, Index endIndex);
 	Move(Index startIndex, Index endIndex, Piece* m_pcAttackedPiece);
 	bool generateMove(std::string input, Piece* board[][8]); // Constructor for player input string (example input: "b1a3")
+	std::string toString();
 	bool operator==(Move move2);
 
 	Index m_iStartIndex;

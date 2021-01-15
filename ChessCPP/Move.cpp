@@ -57,6 +57,19 @@ bool Move::generateMove(std::string input, Piece* board[][8])
 	return true;
 }
 
+std::string Move::toString()
+{
+	std::string moveString = "----";
+
+	moveString[0] = m_iStartIndex.m_iCol + 97;
+	moveString[1] = 56 - m_iStartIndex.m_iRow;
+
+	moveString[2] = m_iEndIndex.m_iCol + 97;
+	moveString[3] = 56 - m_iEndIndex.m_iRow;
+
+	return moveString;
+}
+
 bool Move::operator==(Move move2)
 {
 	return ((m_iStartIndex == move2.m_iStartIndex) && (m_iEndIndex == move2.m_iEndIndex));
