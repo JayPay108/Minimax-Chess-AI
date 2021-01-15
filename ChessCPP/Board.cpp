@@ -195,6 +195,7 @@ int Board::evaluate()
 	numOfMoves = moves->m_iSize;
 	swapTurn();
 
+	delete moves; // IS THIS IT
 	moves = new MoveStack;
 	getMoves(moves);
 	enemyNumOfMoves = moves->m_iSize;

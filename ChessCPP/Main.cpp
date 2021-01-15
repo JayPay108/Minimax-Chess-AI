@@ -23,9 +23,6 @@ int main()
 		std::cout << "Move history size: " << board.m_msMoveHistory.m_iSize << std::endl;
 		move = minimax.getNextMove(&board);
 		std::cout << "Done searching for moves for " << i << std::endl;
-		std::cout << "Scanning for memory leaks..." << std::endl;
-		_CrtDumpMemoryLeaks();
-		std::cout << "Done with " << i << std::endl;
 	}
 
 	while (true)
@@ -65,7 +62,7 @@ int main()
 
 			board.swapTurn();
 			
-			std::cout << "beep boop bop" << std::endl;
+			std::cout << "beep boop bop" << std::endl; // frick you this is how i debug
 			move = new Move();
 			move = minimax.getNextMove(&board);
 			std::cout << "row: " << move->m_iStartIndex.m_iRow << ", col: " << move->m_iStartIndex.m_iCol << std::endl

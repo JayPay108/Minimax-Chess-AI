@@ -31,9 +31,8 @@ Move* MoveStack::removeMove()
 	if (m_pHead != nullptr)
 	{
 		m_pHead = m_pHead->m_pNext;
+		m_iSize--;
 	}
-
-	m_iSize--;
 
 	return removedMove;
 }
