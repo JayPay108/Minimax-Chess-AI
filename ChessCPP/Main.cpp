@@ -20,6 +20,8 @@ int main()
 		clearConsole();
 
 		lastMove = board.m_msMoveHistory.m_pHead;
+
+		std::cout << "Board evaluation for you: " << board.evaluate() << std::endl;
 		if (lastMove != nullptr)
 		{
 			std::cout << lastMove->toString() << std::endl;

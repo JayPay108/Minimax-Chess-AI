@@ -19,8 +19,7 @@ Piece::Piece(char name, Index index, Color color)
 	m_iIndex = index;
 	m_cColor = color;
 	m_iNumOfMoves = 0;
-
-	setValue();
+	m_iValue = 0;
 }
 
 bool Piece::isValidMove(Move* move, Piece* board[][8])
@@ -35,15 +34,10 @@ bool Piece::isValidMove(Move* move, Piece* board[][8])
 	return validMove;
 }
 
-// Virtual fuctions to be defined by child piece classes
-void Piece::setValue() {}
+// Virtual fuction to be defined by child piece classes
 void Piece::getMoves(MoveStack* moves, Piece* board[][8]) {}
 
 // PAWN
-void Pawn::setValue()
-{
-	m_iValue = 1;
-}
 
 void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 {
@@ -107,10 +101,6 @@ void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 }
 
 // ROOK
-void Rook::setValue()
-{
-	m_iValue = 5;
-}
 
 void Rook::getMoves(MoveStack* moves, Piece* board[][8])
 {
@@ -153,10 +143,6 @@ void Rook::getMoves(MoveStack* moves, Piece* board[][8])
 }
 
 // BISHOP
-void Bishop::setValue()
-{
-	m_iValue = 3;
-}
 
 void Bishop::getMoves(MoveStack* moves, Piece* board[][8])
 {
@@ -199,10 +185,6 @@ void Bishop::getMoves(MoveStack* moves, Piece* board[][8])
 }
 
 // Knight
-void Knight::setValue()
-{
-	m_iValue = 3;
-}
 
 void Knight::getMoves(MoveStack* moves, Piece* board[][8])
 {
@@ -242,10 +224,6 @@ void Knight::getMoves(MoveStack* moves, Piece* board[][8])
 }
 
 // Queen
-void Queen::setValue()
-{
-	m_iValue = 9;
-}
 
 void Queen::getMoves(MoveStack* moves, Piece* board[][8])
 {
@@ -288,10 +266,6 @@ void Queen::getMoves(MoveStack* moves, Piece* board[][8])
 }
 
 // King
-void King::setValue()
-{
-	m_iValue = 3;
-}
 
 void King::getMoves(MoveStack* moves, Piece* board[][8])
 {

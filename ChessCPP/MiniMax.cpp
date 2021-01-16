@@ -83,7 +83,6 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 
 				if (currentDepth == DEPTH)
 				{
-					std::cout << "replacing move" << std::endl; // debug
 					m_mBestMove = *currentMove;
 				}
 			}

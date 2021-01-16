@@ -9,7 +9,6 @@ class Piece
 public:
 	explicit Piece(char name, Index index, Color color);
 	bool isValidMove(Move* move, Piece* board[][8]);
-	virtual void setValue();
 	virtual void getMoves(MoveStack* moves, Piece* board[][8]);
 
 	char m_cName;
@@ -24,7 +23,6 @@ class Pawn : public Piece
 {
 public:
 	using Piece::Piece;
-	void setValue();
 	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
@@ -32,7 +30,6 @@ class Rook : public Piece
 {
 public:
 	using Piece::Piece;
-	void setValue();
 	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
@@ -40,7 +37,6 @@ class Knight : public Piece
 {
 public:
 	using Piece::Piece;
-	void setValue();
 	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
@@ -48,7 +44,6 @@ class Bishop : public Piece
 {
 public:
 	using Piece::Piece;
-	void setValue();
 	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
@@ -56,7 +51,6 @@ class Queen : public Piece
 {
 public:
 	using Piece::Piece;
-	void setValue();
 	void getMoves(MoveStack* moves, Piece* board[][8]);
 };
 
@@ -64,6 +58,5 @@ class King : public Piece
 {
 public:
 	using Piece::Piece;
-	void setValue();
 	void getMoves(MoveStack* moves, Piece* board[][8]);
 };

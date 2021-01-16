@@ -189,8 +189,9 @@ int Board::evaluate()
 			}
 		}
 	}
-
-	boardValue += (pieceValues * DEFENSE);
+	
+	int defense = (pieceValues * DEFENSE);
+	boardValue += defense;
 
 	// Summing up all valid moves
 	MoveStack* moves = new MoveStack;
@@ -207,7 +208,8 @@ int Board::evaluate()
 	enemyNumOfMoves = moves->m_iSize;
 	swapTurn();
 
-	boardValue += ((numOfMoves - enemyNumOfMoves) * AGRESSIVENESS);
+	int agresiveness = ((numOfMoves - enemyNumOfMoves) * AGRESSIVENESS);
+	boardValue += agresiveness;
 	delete moves;
 
 	// Pawn stuff
@@ -277,7 +279,8 @@ int Board::evaluate()
 		}
 	}
 
-	boardValue -= (((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns)) * PAWNSTUFF);
+	int pawnStuff = ((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns)) * PAWNSTUFF;
+	boardValue -= pawnStuff;
 
 	return boardValue;
 }
@@ -290,21 +293,27 @@ void Board::addPiece(char name, Index index, Color color)
 	{
 	case 'p':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Pawn(name, index, color);
+		m_pcBoard[index.m_iRow][index.m_iCol]->m_iValue = 1;
 		break;
 	case 'r':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Rook(name, index, color);
+		m_pcBoard[index.m_iRow][index.m_iCol]->m_iValue = 5;
 		break;
 	case 'n':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Knight(name, index, color);
+		m_pcBoard[index.m_iRow][index.m_iCol]->m_iValue = 3;
 		break;
 	case 'b':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Bishop(name, index, color);
+		m_pcBoard[index.m_iRow][index.m_iCol]->m_iValue = 3;
 		break;
 	case 'q':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new Queen(name, index, color);
+		m_pcBoard[index.m_iRow][index.m_iCol]->m_iValue = 9;
 		break;
 	case 'k':
 		m_pcBoard[index.m_iRow][index.m_iCol] = new King(name, index, color);
+		m_pcBoard[index.m_iRow][index.m_iCol]->m_iValue = 999;
 		break;
 	}
 }

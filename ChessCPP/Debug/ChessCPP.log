@@ -1,2 +1,3 @@
-﻿  MiniMax.cpp
+﻿  Piece.cpp
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\Piece.cpp(48,6): warning C4101: 'direction': unreferenced local variable
   ChessCPP.vcxproj -> C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\Debug\ChessCPP.exe
