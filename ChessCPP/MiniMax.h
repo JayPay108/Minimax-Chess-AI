@@ -10,7 +10,7 @@ public:
 	int m_iDepth;
 	int m_iAlpha;
 	int m_iBeta;
-	Move m_mBestMove;
+	Move *m_mBestMove;
 
 private:
 	int searchMoves(Board* board, bool maximize, int currentDepth, int alpha, int beta);

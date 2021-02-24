@@ -13,6 +13,8 @@ public:
 	bool hasMove(Move* move);
 	void empty();
 
+	void print(); // debug function
+
 	Move* m_pHead;
 	int m_iSize;
 };

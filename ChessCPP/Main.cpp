@@ -19,13 +19,12 @@ int main()
 	{
 		clearConsole();
 
-		lastMove = board.m_msMoveHistory.m_pHead;
-
-		std::cout << "Board evaluation for you: " << board.evaluate() << std::endl;
-		if (lastMove != nullptr)
+		if (board.m_msMoveHistory.m_iSize > 0)
 		{
-			std::cout << lastMove->toString() << std::endl;
+			std::cout << board.m_msMoveHistory.m_pHead->toString() << std::endl;
 		}
+
+		std::cout << "Board value: " << board.evaluate() << std::endl;
 
 		board.print();
 
@@ -51,19 +50,27 @@ int main()
 
 		if (undo)
 		{
-			delete board.undoMove();
+			board.undoMove();
+			board.undoMove(); // needs to delete
 			undo = false;
 		}
 		else
 		{
+			
 			board.makeMove(move);
-
+			
 			board.swapTurn();
+			
+			std::cout << "Craig is thinking...";
 			
 			move = new Move();
 			move = minimax.getNextMove(&board);
-			std::cout << "here" << std::endl; // debug
 			board.makeMove(move);
+
+			for (int i = 0; i < 20; i++)
+			{
+				std::cout << '\b' << ' ' << '\b';
+			}
 			
 			board.swapTurn();
 		}
@@ -71,9 +78,9 @@ int main()
 
 	return 0;
 }
-
+using namespace std;
 
 void clearConsole()
-{
+{	
 	std::cout << std::string(20, '\n') << std::endl;
 }

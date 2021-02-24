@@ -64,3 +64,20 @@ void MoveStack::empty()
 		removedMove = removeMove();
 	}
 }
+
+
+// DEBUG FUNCTION
+#include <iostream>
+void MoveStack::print()
+{
+	std::cout << "Size: " << m_iSize << std::endl; 
+
+	Move* location = m_pHead;
+
+	while (location != nullptr)
+	{
+		std::cout << location << std::endl;
+		std::cout << "(" << location->m_iEndIndex.m_iRow << ", " << location->m_iEndIndex.m_iCol << ")"  << std::endl;
+		location = location->m_pNext;
+	}
+}

@@ -11,9 +11,9 @@ MiniMax::MiniMax(int depth)
 
 Move* MiniMax::getNextMove(Board* board)
 {
-	m_mBestMove = Move(); // debug
+	m_mBestMove = new Move();
 	searchMoves(board, true, m_iDepth, -9999, 9999);
-	return &m_mBestMove;
+	return m_mBestMove;
 }
 
 int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alpha, int beta)
@@ -77,17 +77,32 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999, 9999);
 			currentMove = board->undoMove();
 
+			//debug
+			if (currentDepth == DEPTH)
+			{
+				std::cout << std::endl << boardValue << " - ";
+			}
+
 			if (boardValue > maxValue)
 			{
 				maxValue = boardValue;
 
 				if (currentDepth == DEPTH)
 				{
-					m_mBestMove = *currentMove;
+					delete m_mBestMove;
+					m_mBestMove = new Move();
+					m_mBestMove = currentMove;
+					std::cout << currentMove->toString(); // debug
+				}
+				else
+				{
+					delete currentMove;
 				}
 			}
-
-			delete currentMove;
+			else
+			{
+				delete currentMove;
+			}
 
 			if (boardValue > alpha)
 			{
