@@ -100,7 +100,6 @@ void Board::makeMove(Move* move)
 	movedPiece->m_iNumOfMoves++;
 
 	m_msMoveHistory.addMove(move);
-	swapTurn();
 }
 
 Move* Board::undoMove()
@@ -122,7 +121,6 @@ Move* Board::undoMove()
 
 	movedPiece->m_iNumOfMoves--;
 
-	swapTurn();
 	return lastMove;
 }
 
@@ -193,6 +191,7 @@ int Board::evaluate()
 	}
 	
 	int defense = (pieceValues * DEFENSE);
+	//std::cout << "material " << defense << std::endl; // debug
 	boardValue += defense;
 
 	// Summing up all valid moves
@@ -202,29 +201,32 @@ int Board::evaluate()
 
 	getMoves(moves);
 	numOfMoves = moves->m_iSize;
+	//std::cout << "friendly moves " << numOfMoves << std::endl; // debug
 	swapTurn();
 
 	delete moves; // stupid me forgot this line...
 	moves = new MoveStack;
 	getMoves(moves);
 	enemyNumOfMoves = moves->m_iSize;
+	//std::cout << "unfriendly moves " << enemyNumOfMoves << std::endl; // debug
 	swapTurn();
 
-	int agresiveness = ((numOfMoves - enemyNumOfMoves) * AGRESSIVENESS);
-	boardValue += agresiveness;
+	int agressiveness = ((numOfMoves - enemyNumOfMoves) * AGRESSIVENESS);
+	//std::cout << "boardControl " << agressiveness << std::endl; // debug
+	boardValue += agressiveness;
 	delete moves;
 
 	// Pawn stuff
 	int blockedPawns = 0;
 	int enemyBlockedPawns = 0;
 
-	int pawnsPerRow[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	int enemyPawnsPerRow[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	int pawnsPerCol[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	int enemyPawnsPerCol[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	int nextRow;
-	for (int col = 0; col < 8; col++)
+	for (int row = 0; row < 8; row++)
 	{
-		for (int row = 0; row < 8; row++)
+		for (int col = 0; col < 8; col++)
 		{
 			piece = m_pcBoard[row][col];
 
@@ -232,7 +234,7 @@ int Board::evaluate()
 			{
 				if (piece->m_cColor == m_cTurn)
 				{
-					pawnsPerRow[row]++;
+					pawnsPerCol[col]++;
 
 					nextRow = row + piece->m_iDirection;
 					if (m_pcBoard[nextRow][col] != nullptr)
@@ -242,7 +244,7 @@ int Board::evaluate()
 				}
 				else
 				{
-					enemyPawnsPerRow[row]++;
+					enemyPawnsPerCol[col]++;
 
 					nextRow = row + piece->m_iDirection;
 					if (m_pcBoard[nextRow][col] != nullptr)
@@ -259,29 +261,29 @@ int Board::evaluate()
 
 	int doubledPawns = 0;
 	int enemyDoubledPawns = 0;
-
-	for (int row = 0; row < 8; row++)
+	
+	for (int col = 0; col < 8; col++)
 	{
-		if (pawnsPerRow[row] > 1)
+		if (pawnsPerCol[col] > 1)
 		{
 			doubledPawns++;
 		}
-		if (enemyPawnsPerRow[row] > 1)
+		if (enemyPawnsPerCol[col] > 1)
 		{
 			enemyDoubledPawns++;
 		}
 
-		if ((row == 0 || pawnsPerRow[row - 1] == 0) && (row == 7 || pawnsPerRow[row + 1] == 0))
+		if (pawnsPerCol[col] > 0 && (col == 0 || pawnsPerCol[col - 1] == 0) && (col == 7 || pawnsPerCol[col + 1] == 0))
 		{
 			isolatedPawns++;
 		}
-		if ((row == 0 || enemyPawnsPerRow[row - 1] == 0) && (row == 7 || enemyPawnsPerRow[row + 1] == 0))
+		if (enemyPawnsPerCol[col] > 0 && (col == 0 || enemyPawnsPerCol[col - 1] == 0) && (col == 7 || enemyPawnsPerCol[col + 1] == 0))
 		{
 			enemyIsolatedPawns++;
 		}
 	}
 
-	int pawnStuff = ((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns))* PAWNSTUFF;
+	int pawnStuff = ((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns)) * PAWNSTUFF;
 	boardValue -= pawnStuff;
 
 	return boardValue;

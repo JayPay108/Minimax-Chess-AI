@@ -32,15 +32,16 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		int minValue = 9999999;
 		
 		MoveStack* moves = new MoveStack;
+
+		board->swapTurn();
 		board->getMoves(moves);
+		board->swapTurn();
 
 		currentMove = moves->removeMove();
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
-			board->swapTurn();
 			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999999, 9999999);
-			board->swapTurn();
 			delete board->undoMove();
 
 			if (boardValue < minValue)

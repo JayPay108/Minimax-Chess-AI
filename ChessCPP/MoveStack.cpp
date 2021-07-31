@@ -77,6 +77,7 @@ void MoveStack::print()
 	while (location != nullptr)
 	{
 		std::cout << location << std::endl;
+		std::cout << "(" << location->m_iStartIndex.m_iRow << ", " << location->m_iStartIndex.m_iCol << ")" << std::endl;
 		std::cout << "(" << location->m_iEndIndex.m_iRow << ", " << location->m_iEndIndex.m_iCol << ")"  << std::endl;
 		location = location->m_pNext;
 	}

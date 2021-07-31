@@ -1,4 +1,4 @@
-#include "Board.h"
+﻿#include "Board.h"
 #include "MiniMax.h"
 #include <iostream>
 #include <string>
@@ -21,13 +21,12 @@ int main()
 
 		if (board.m_msMoveHistory.m_iSize > 0)
 		{
-			std::cout << board.m_msMoveHistory.m_pHead->toString() << std::endl;
+			std::cout << "Craig's move: " << board.m_msMoveHistory.m_pHead->toString() << std::endl << std::endl;
 		}
 
-		std::cout << "Board value: " << board.evaluate() << std::endl << std::endl << std::endl;
+		// std::cout << "Board value: " << board.evaluate() << std::endl << std::endl << std::endl;
 
 		board.print();
-
 		do
 		{
 			std::cout << std::endl << "Enter your move: ";
@@ -56,15 +55,15 @@ int main()
 		}
 		else
 		{
-			
 			board.makeMove(move);
 			
-			
+			board.swapTurn();
 			std::cout << "Craig is thinking...";
 			
 			move = new Move();
 			move = minimax.getNextMove(&board);
 			board.makeMove(move);
+			board.swapTurn();
 
 			for (int i = 0; i < 20; i++)
 			{
