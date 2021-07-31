@@ -24,13 +24,13 @@ int main()
 			std::cout << board.m_msMoveHistory.m_pHead->toString() << std::endl;
 		}
 
-		std::cout << "Board value: " << board.evaluate() << std::endl;
+		std::cout << "Board value: " << board.evaluate() << std::endl << std::endl << std::endl;
 
 		board.print();
 
 		do
 		{
-			std::cout << "Enter your move: ";
+			std::cout << std::endl << "Enter your move: ";
 			std::getline(std::cin, input);
 
 			input = toLower(input);
@@ -50,8 +50,8 @@ int main()
 
 		if (undo)
 		{
-			board.undoMove();
-			board.undoMove(); // needs to delete
+			delete board.undoMove();
+			delete board.undoMove();
 			undo = false;
 		}
 		else
@@ -59,7 +59,6 @@ int main()
 			
 			board.makeMove(move);
 			
-			board.swapTurn();
 			
 			std::cout << "Craig is thinking...";
 			
@@ -72,7 +71,6 @@ int main()
 				std::cout << '\b' << ' ' << '\b';
 			}
 			
-			board.swapTurn();
 		}
 	}
 

@@ -5,14 +5,14 @@ MiniMax::MiniMax(int depth)
 {
 	m_iDepth = depth;
 
-	m_iAlpha = -9999;
-	m_iBeta = 9999;
+	m_iAlpha = -9999999;
+	m_iBeta = 9999999;
 }
 
 Move* MiniMax::getNextMove(Board* board)
 {
 	m_mBestMove = new Move();
-	searchMoves(board, true, m_iDepth, -9999, 9999);
+	searchMoves(board, true, m_iDepth, -9999999, 9999999);
 	return m_mBestMove;
 }
 
@@ -29,8 +29,7 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 
 	if (!maximize)
 	{
-		board->swapTurn();
-		int minValue = 9999;
+		int minValue = 9999999;
 		
 		MoveStack* moves = new MoveStack;
 		board->getMoves(moves);
@@ -39,7 +38,9 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
-			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999, 9999);
+			board->swapTurn();
+			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999999, 9999999);
+			board->swapTurn();
 			delete board->undoMove();
 
 			if (boardValue < minValue)
@@ -60,12 +61,11 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 			currentMove = moves->removeMove();
 		}
 		
-		board->swapTurn();
 		return minValue;
 	}
 	else
 	{
-		int maxValue = -9999;
+		int maxValue = -9999999;
 
 		MoveStack* moves = new MoveStack;
 		board->getMoves(moves);
@@ -74,14 +74,8 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
-			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999, 9999);
+			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999999, 9999999);
 			currentMove = board->undoMove();
-
-			//debug
-			if (currentDepth == DEPTH)
-			{
-				std::cout << std::endl << boardValue << " - ";
-			}
 
 			if (boardValue > maxValue)
 			{
@@ -92,7 +86,6 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 					delete m_mBestMove;
 					m_mBestMove = new Move();
 					m_mBestMove = currentMove;
-					std::cout << currentMove->toString(); // debug
 				}
 				else
 				{

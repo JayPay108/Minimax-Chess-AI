@@ -286,7 +286,7 @@ void King::getMoves(MoveStack* moves, Piece* board[][8])
 
 		if (row < 0 || row > 7 || col < 0 || col > 7)
 		{
-			break;
+			continue;
 		}
 
 		if (board[row][col] != nullptr)

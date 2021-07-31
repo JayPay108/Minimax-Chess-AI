@@ -100,6 +100,7 @@ void Board::makeMove(Move* move)
 	movedPiece->m_iNumOfMoves++;
 
 	m_msMoveHistory.addMove(move);
+	swapTurn();
 }
 
 Move* Board::undoMove()
@@ -121,6 +122,7 @@ Move* Board::undoMove()
 
 	movedPiece->m_iNumOfMoves--;
 
+	swapTurn();
 	return lastMove;
 }
 
@@ -279,7 +281,7 @@ int Board::evaluate()
 		}
 	}
 
-	int pawnStuff = ((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns)) * PAWNSTUFF;
+	int pawnStuff = ((isolatedPawns - enemyIsolatedPawns) + (doubledPawns - enemyDoubledPawns) + (blockedPawns - enemyBlockedPawns))* PAWNSTUFF;
 	boardValue -= pawnStuff;
 
 	return boardValue;
