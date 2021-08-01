@@ -12,13 +12,15 @@ public:
 	void makeMove(Move* move);
 	Move* undoMove();
 	bool isValidMove(Move* move);
-	void getMoves(MoveStack* moves);
-	int evaluate();
+	void getMoves(int color, MoveStack* moves);
+	bool isCheck(int checkColor);
+	bool isCheckMate(int checkColor);
+	int evaluate(int evaluateForColor);
 
 	Piece* m_pcBoard[8][8];
-	Color m_cTurn;
+	int m_cTurn;
 	MoveStack m_msMoveHistory;
 
 private:
-	void addPiece(char name, Index index, Color color);
+	void addPiece(char name, Index index, int color);
 };

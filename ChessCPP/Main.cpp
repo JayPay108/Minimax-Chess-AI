@@ -14,6 +14,7 @@ int main()
 	Move* move = new Move;
 	Move* lastMove;
 	bool undo = false;
+	bool gameOver = false;
 
 	while (true)
 	{
@@ -21,12 +22,30 @@ int main()
 
 		if (board.m_msMoveHistory.m_iSize > 0)
 		{
-			std::cout << "Craig's move: " << board.m_msMoveHistory.m_pHead->toString() << std::endl << std::endl;
+			std::cout << "Craig's move: " << board.m_msMoveHistory.m_pHead->toString() << std::endl;
+
+			if (board.isCheckMate(board.m_cTurn))
+			{
+				std::cout << "Checkmate! You lose!" << std::endl;
+				gameOver = true;
+			}
+			else if (board.isCheck(board.m_cTurn))
+			{
+				std::cout << "You are in check!" << std::endl;
+			}
+
+			std::cout << std::endl;
 		}
 
 		// std::cout << "Board value: " << board.evaluate() << std::endl << std::endl << std::endl;
 
 		board.print();
+
+		if (gameOver)
+		{
+			return 0;
+		}
+
 		do
 		{
 			std::cout << std::endl << "Enter your move: ";

@@ -18,9 +18,18 @@ Move* MiniMax::getNextMove(Board* board)
 
 int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alpha, int beta)
 {
+	if (board->isCheckMate(!board->m_cTurn))
+	{
+		return 9999999;
+	}
+	if (board->isCheckMate(board->m_cTurn))
+	{
+		return -9999999;
+	}
+
 	if (currentDepth == 0)	// TODO: end when game is over
 	{
-		return board->evaluate();
+		return board->evaluate(board->m_cTurn);
 	}
 
 	int boardValue;
@@ -33,15 +42,13 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		
 		MoveStack* moves = new MoveStack;
 
-		board->swapTurn();
-		board->getMoves(moves);
-		board->swapTurn();
+		board->getMoves(!board->m_cTurn, moves);
 
 		currentMove = moves->removeMove();
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
-			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999999, 9999999);
+			boardValue = searchMoves(board, !maximize, currentDepth - 1, alpha, beta);
 			delete board->undoMove();
 
 			if (boardValue < minValue)
@@ -69,13 +76,13 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		int maxValue = -9999999;
 
 		MoveStack* moves = new MoveStack;
-		board->getMoves(moves);
+		board->getMoves(board->m_cTurn, moves);
 
 		currentMove = moves->removeMove();
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
-			boardValue = searchMoves(board, !maximize, currentDepth - 1, -9999999, 9999999);
+			boardValue = searchMoves(board, !maximize, currentDepth - 1, alpha, beta);
 			currentMove = board->undoMove();
 
 			if (boardValue > maxValue)

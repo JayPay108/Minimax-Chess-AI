@@ -9,7 +9,7 @@ Board::Board()
 	inFile.open("StartingBoard.txt");
 
 	char pieceChar;
-	Color pieceColor;
+	int pieceColor;
 	for (int row = 0; row < 8; row++)
 	{
 		for (int col = 0; col < 8; col++)
@@ -24,11 +24,11 @@ Board::Board()
 
 			if (isupper(pieceChar))
 			{
-				pieceColor = black;
+				pieceColor = 0;
 			}
 			else
 			{
-				pieceColor = white;
+				pieceColor = 1;
 			}
 
 			addPiece(pieceChar, Index(row, col), pieceColor);
@@ -37,7 +37,7 @@ Board::Board()
 
 	inFile.close();
 
-	m_cTurn = white;
+	m_cTurn = 1;
 }
 
 void Board::print()
@@ -76,14 +76,7 @@ void Board::print()
 
 void Board::swapTurn()
 {
-	if (m_cTurn == white)
-	{
-		m_cTurn = black;
-	}
-	else
-	{
-		m_cTurn = white;
-	}
+	m_cTurn = !m_cTurn;
 }
 
 void Board::makeMove(Move* move)
@@ -138,10 +131,23 @@ bool Board::isValidMove(Move *move)
 		return false;
 	}
 
-	return piece->isValidMove(move, m_pcBoard);
+	if (!piece->isValidMove(move, m_pcBoard))
+	{
+		return false;
+	}
+
+	makeMove(move);
+	if (isCheck(m_cTurn))
+	{
+		undoMove();
+		return false;
+	}
+	undoMove();
+
+	return true;
 }
 
-void Board::getMoves(MoveStack* moves)
+void Board::getMoves(int color, MoveStack* moves)
 {
 	Piece* piece;
 	for (int row = 0; row < 8; row++)
@@ -150,7 +156,7 @@ void Board::getMoves(MoveStack* moves)
 		{
 			piece = m_pcBoard[row][col];
 
-			if (piece == nullptr || piece->m_cColor != m_cTurn)
+			if (piece == nullptr || piece->m_cColor != color)
 			{
 				continue;
 			}
@@ -160,7 +166,69 @@ void Board::getMoves(MoveStack* moves)
 	}
 }
 
-int Board::evaluate()
+bool Board::isCheck(int checkColor)
+{
+	MoveStack* moves = new MoveStack;
+	getMoves(!checkColor, moves);
+
+	Index attackingIndex;
+	Move* currentMove = moves->removeMove();
+	while (currentMove != nullptr)
+	{
+		if (currentMove->m_pcAttackedPiece != nullptr)
+		{
+			if (checkColor == 1 && toLower(currentMove->m_pcAttackedPiece->m_cName) == 'k')
+			{
+				delete currentMove;
+				delete moves;
+				return true;
+			}
+			if (checkColor == 0 && currentMove->m_pcAttackedPiece->m_cName == 'K')
+			{
+				delete currentMove;
+				delete moves;
+				return true;
+			}
+		}
+
+		delete currentMove;
+		currentMove = moves->removeMove();
+	}
+	delete moves;
+	return false;
+}
+
+bool Board::isCheckMate(int checkColor)
+{
+	if (!isCheck(checkColor))
+	{
+		return false;
+	}
+
+	MoveStack* moves = new MoveStack;
+	getMoves(checkColor, moves);
+
+	Move* currentMove = moves->removeMove();
+	while (currentMove != nullptr)
+	{
+		makeMove(currentMove);
+		if (!isCheck(checkColor))
+		{
+			undoMove();
+			delete currentMove;
+			delete moves;
+			return false;
+		}
+		undoMove();
+
+		delete currentMove;
+		currentMove = moves->removeMove();
+	}
+	delete moves;
+	return true;
+}
+
+int Board::evaluate(int evaluateForColor)
 {
 	int boardValue = 0;
 
@@ -179,7 +247,7 @@ int Board::evaluate()
 				continue;
 			}
 
-			if (piece->m_cColor == m_cTurn)
+			if (piece->m_cColor == evaluateForColor)
 			{
 				pieceValues += piece->m_iValue;
 			}
@@ -191,7 +259,6 @@ int Board::evaluate()
 	}
 	
 	int defense = (pieceValues * DEFENSE);
-	//std::cout << "material " << defense << std::endl; // debug
 	boardValue += defense;
 
 	// Summing up all valid moves
@@ -199,20 +266,15 @@ int Board::evaluate()
 	int numOfMoves;
 	int enemyNumOfMoves;
 
-	getMoves(moves);
+	getMoves(evaluateForColor, moves);
 	numOfMoves = moves->m_iSize;
-	//std::cout << "friendly moves " << numOfMoves << std::endl; // debug
-	swapTurn();
 
 	delete moves; // stupid me forgot this line...
 	moves = new MoveStack;
-	getMoves(moves);
+	getMoves(!evaluateForColor, moves);
 	enemyNumOfMoves = moves->m_iSize;
-	//std::cout << "unfriendly moves " << enemyNumOfMoves << std::endl; // debug
-	swapTurn();
 
 	int agressiveness = ((numOfMoves - enemyNumOfMoves) * AGRESSIVENESS);
-	//std::cout << "boardControl " << agressiveness << std::endl; // debug
 	boardValue += agressiveness;
 	delete moves;
 
@@ -232,7 +294,7 @@ int Board::evaluate()
 
 			if (piece != nullptr && piece->m_iValue == 1)
 			{
-				if (piece->m_cColor == m_cTurn)
+				if (piece->m_cColor == evaluateForColor)
 				{
 					pawnsPerCol[col]++;
 
@@ -289,7 +351,7 @@ int Board::evaluate()
 	return boardValue;
 }
 
-void Board::addPiece(char name, Index index, Color color)
+void Board::addPiece(char name, Index index, int color)
 {
 	name = toLower(name);
 

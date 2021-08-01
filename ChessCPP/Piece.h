@@ -2,18 +2,16 @@
 
 #include "MoveStack.h"
 
-enum Color { white, black };
-
 class Piece
 {
 public:
-	explicit Piece(char name, Index index, Color color);
+	explicit Piece(char name, Index index, int color);
 	bool isValidMove(Move* move, Piece* board[][8]);
 	virtual void getMoves(MoveStack* moves, Piece* board[][8]);
 
 	char m_cName;
 	Index m_iIndex;
-	Color m_cColor;
+	int m_cColor;
 	int m_iValue;
 	int m_iNumOfMoves;
 	int m_iDirection;

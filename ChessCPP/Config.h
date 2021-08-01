@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEPTH 3
+#define DEPTH 4
 
 #define AGRESSIVENESS 1
 #define DEFENSE 10

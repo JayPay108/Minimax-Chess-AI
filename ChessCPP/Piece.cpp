@@ -3,9 +3,9 @@
 #include <iostream>
 
 
-Piece::Piece(char name, Index index, Color color)
+Piece::Piece(char name, Index index, int color)
 {
-	if (color == white)
+	if (color == 1)
 	{
 		m_cName = toLower(name);
 		m_iDirection = -1;
