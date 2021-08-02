@@ -7,11 +7,13 @@ MiniMax::MiniMax(int depth)
 
 	m_iAlpha = -9999999;
 	m_iBeta = 9999999;
+
+	m_mBestMove = nullptr;
 }
 
 Move* MiniMax::getNextMove(Board* board)
 {
-	m_mBestMove = new Move();
+	m_mBestMove = nullptr;
 	searchMoves(board, true, m_iDepth, -9999999, 9999999);
 	return m_mBestMove;
 }
@@ -27,12 +29,12 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		return -9999999;
 	}
 
-	if (currentDepth == 0)	// TODO: end when game is over
+	if (currentDepth == 0)
 	{
 		return board->evaluate(board->m_cTurn);
 	}
 
-	int boardValue;
+	float boardValue;
 	Move* currentMove;
 	Move bestMove;
 
@@ -48,6 +50,14 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
+
+			if (board->isCheck(!board->m_cTurn))
+			{
+				delete board->undoMove();
+				currentMove = moves->removeMove();
+				continue;
+			}
+
 			boardValue = searchMoves(board, !maximize, currentDepth - 1, alpha, beta);
 			delete board->undoMove();
 
@@ -82,8 +92,16 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		while (currentMove != nullptr)
 		{
 			board->makeMove(currentMove);
+
+			if (board->isCheck(board->m_cTurn))
+			{
+				delete board->undoMove();
+				currentMove = moves->removeMove();
+				continue;
+			}
+
 			boardValue = searchMoves(board, !maximize, currentDepth - 1, alpha, beta);
-			currentMove = board->undoMove();
+			board->undoMove();	// does not need return value, currentMove already last move applied to board
 
 			if (boardValue > maxValue)
 			{

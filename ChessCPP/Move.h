@@ -18,7 +18,7 @@ public:
 	Index m_iStartIndex;
 	Index m_iEndIndex;
 	Piece* m_pcAttackedPiece;
-	bool m_bPromotion;
+	Piece* m_pcPromotedFrom;
 	bool m_bCastle;
 
 	Move* m_pNext;

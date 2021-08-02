@@ -1,3 +1,9 @@
-﻿  Main.cpp
-C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\Main.cpp(15,8): warning C4101: 'lastMove': unreferenced local variable
+﻿  Board.cpp
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\Board.cpp(305,27): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+  Main.cpp
+  MiniMax.cpp
+  Move.cpp
+  MoveStack.cpp
+  Piece.cpp
+  Generating Code...
   ChessCPP.vcxproj -> C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\Debug\ChessCPP.exe

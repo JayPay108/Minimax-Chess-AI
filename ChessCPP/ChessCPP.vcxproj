@@ -156,6 +156,7 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveStack.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="PieceSquareTables.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="StartingBoard.txt" />

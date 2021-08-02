@@ -34,8 +34,9 @@ bool Piece::isValidMove(Move* move, Piece* board[][8])
 	return validMove;
 }
 
-// Virtual fuction to be defined by child piece classes
+// Virtual fuctions to be defined by child piece classes
 void Piece::getMoves(MoveStack* moves, Piece* board[][8]) {}
+float Piece::getPieceSquareValue() { return 0; }
 
 // PAWN
 
@@ -45,7 +46,6 @@ void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 	int currentCol;
 	Index startPos;
 	Index endPos;
-	int direction;
 
 	for (int i = 1; i < 3; i++)
 	{
@@ -100,6 +100,21 @@ void Pawn::getMoves(MoveStack* moves, Piece* board[][8])
 	}
 }
 
+float Pawn::getPieceSquareValue()
+{
+	int row = m_iIndex.m_iRow;
+	int col = m_iIndex.m_iCol;
+
+	if (m_cColor == 1)
+	{
+		return pawnPieceSquare[row][col];
+	}
+	else
+	{
+		return pawnPieceSquare[7 - row][col];
+	}
+}
+
 // ROOK
 
 void Rook::getMoves(MoveStack* moves, Piece* board[][8])
@@ -139,6 +154,21 @@ void Rook::getMoves(MoveStack* moves, Piece* board[][8])
 
 			moves->addMove(new Move(startPos, endPos));
 		}
+	}
+}
+
+float Rook::getPieceSquareValue()
+{
+	int row = m_iIndex.m_iRow;
+	int col = m_iIndex.m_iCol;
+
+	if (m_cColor == 1)
+	{
+		return rookPieceSquare[row][col];
+	}
+	else
+	{
+		return rookPieceSquare[7 - row][col];
 	}
 }
 
@@ -184,6 +214,21 @@ void Bishop::getMoves(MoveStack* moves, Piece* board[][8])
 	}
 }
 
+float Bishop::getPieceSquareValue()
+{
+	int row = m_iIndex.m_iRow;
+	int col = m_iIndex.m_iCol;
+
+	if (m_cColor == 1)
+	{
+		return bishopPieceSquare[row][col];
+	}
+	else
+	{
+		return bishopPieceSquare[7 - row][col];
+	}
+}
+
 // Knight
 
 void Knight::getMoves(MoveStack* moves, Piece* board[][8])
@@ -220,6 +265,21 @@ void Knight::getMoves(MoveStack* moves, Piece* board[][8])
 		}
 
 		moves->addMove(new Move(startPos, endPos));
+	}
+}
+
+float Knight::getPieceSquareValue()
+{
+	int row = m_iIndex.m_iRow;
+	int col = m_iIndex.m_iCol;
+
+	if (m_cColor == 1)
+	{
+		return knightPieceSquare[row][col];
+	}
+	else
+	{
+		return knightPieceSquare[7 - row][col];
 	}
 }
 
@@ -265,6 +325,21 @@ void Queen::getMoves(MoveStack* moves, Piece* board[][8])
 	}
 }
 
+float Queen::getPieceSquareValue()
+{
+	int row = m_iIndex.m_iRow;
+	int col = m_iIndex.m_iCol;
+
+	if (m_cColor == 1)
+	{
+		return queenPieceSquare[row][col];
+	}
+	else
+	{
+		return queenPieceSquare[7 - row][col];
+	}
+}
+
 // King
 
 void King::getMoves(MoveStack* moves, Piece* board[][8])
@@ -301,5 +376,20 @@ void King::getMoves(MoveStack* moves, Piece* board[][8])
 		}
 
 		moves->addMove(new Move(startPos, endPos));
+	}
+}
+
+float King::getPieceSquareValue()
+{
+	int row = m_iIndex.m_iRow;
+	int col = m_iIndex.m_iCol;
+
+	if (m_cColor == 1)
+	{
+		return kingPieceSquare[row][col];
+	}
+	else
+	{
+		return kingPieceSquare[7 - row][col];
 	}
 }

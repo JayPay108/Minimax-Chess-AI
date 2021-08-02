@@ -1,7 +1,8 @@
 #pragma once
 
-#define DEPTH 4
+#define DEPTH 3
 
 #define AGRESSIVENESS 1
 #define DEFENSE 10
-#define PAWNSTUFF 5
+#define PAWNSTUFF 0
+#define POSITIONING 1

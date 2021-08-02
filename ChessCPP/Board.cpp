@@ -89,9 +89,15 @@ void Board::makeMove(Move* move)
 	movedPiece->m_iIndex.m_iRow = move->m_iEndIndex.m_iRow;
 	movedPiece->m_iIndex.m_iCol = move->m_iEndIndex.m_iCol;
 
-
 	movedPiece->m_iNumOfMoves++;
 
+	// Pawn promotion
+	if (toLower(movedPiece->m_cName) == 'p' && (movedPiece->m_iIndex.m_iRow == 0 || movedPiece->m_iIndex.m_iRow == 7))
+	{
+		addPiece('q', movedPiece->m_iIndex, movedPiece->m_cColor);
+		move->m_pcPromotedFrom = movedPiece;
+	}
+	
 	m_msMoveHistory.addMove(move);
 }
 
@@ -104,7 +110,17 @@ Move* Board::undoMove()
 		return nullptr;
 	}
 
-	Piece* movedPiece = m_pcBoard[lastMove->m_iEndIndex.m_iRow][lastMove->m_iEndIndex.m_iCol];
+	Piece* movedPiece;
+
+	if (lastMove->m_pcPromotedFrom != nullptr)	// If last move involved a promotion, replace the piece with old piece
+	{
+		delete m_pcBoard[lastMove->m_iEndIndex.m_iRow][lastMove->m_iEndIndex.m_iCol];
+		movedPiece = lastMove->m_pcPromotedFrom;
+	}
+	else
+	{
+		movedPiece = m_pcBoard[lastMove->m_iEndIndex.m_iRow][lastMove->m_iEndIndex.m_iCol];
+	}
 
 	m_pcBoard[lastMove->m_iStartIndex.m_iRow][lastMove->m_iStartIndex.m_iCol] = movedPiece;
 	m_pcBoard[lastMove->m_iEndIndex.m_iRow][lastMove->m_iEndIndex.m_iCol] = lastMove->m_pcAttackedPiece;
@@ -113,7 +129,7 @@ Move* Board::undoMove()
 	movedPiece->m_iIndex.m_iCol = lastMove->m_iStartIndex.m_iCol;
 
 	movedPiece->m_iNumOfMoves--;
-
+	
 	return lastMove;
 }
 
@@ -228,9 +244,9 @@ bool Board::isCheckMate(int checkColor)
 	return true;
 }
 
-int Board::evaluate(int evaluateForColor)
+float Board::evaluate(int evaluateForColor)
 {
-	int boardValue = 0;
+	float boardValue = 0;
 
 	// Summing up all the piece values
 	int pieceValues = 0;
@@ -260,6 +276,34 @@ int Board::evaluate(int evaluateForColor)
 	
 	int defense = (pieceValues * DEFENSE);
 	boardValue += defense;
+
+	// Summing up piece square table values for each piece
+	float pieceSquareValues = 0;
+
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = 0; col < 8; col++)
+		{
+			piece = m_pcBoard[row][col];
+
+			if (piece == nullptr)
+			{
+				continue;
+			}
+
+			if (piece->m_cColor == evaluateForColor)
+			{
+				pieceSquareValues += piece->getPieceSquareValue();
+			}
+			else
+			{
+				pieceSquareValues -= piece->getPieceSquareValue();
+			}
+		}
+	}
+
+	float positioning = (pieceSquareValues * POSITIONING);
+	boardValue += positioning;
 
 	// Summing up all valid moves
 	MoveStack* moves = new MoveStack;

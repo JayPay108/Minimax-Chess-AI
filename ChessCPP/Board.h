@@ -15,7 +15,7 @@ public:
 	void getMoves(int color, MoveStack* moves);
 	bool isCheck(int checkColor);
 	bool isCheckMate(int checkColor);
-	int evaluate(int evaluateForColor);
+	float evaluate(int evaluateForColor);
 
 	Piece* m_pcBoard[8][8];
 	int m_cTurn;

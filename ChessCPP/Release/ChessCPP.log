@@ -1,0 +1,21 @@
+﻿  Board.cpp
+  CharFunctions.cpp
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\CharFunctions.cpp(25,20): warning C4018: '<': signed/unsigned mismatch
+  Index.cpp
+  Main.cpp
+  MiniMax.cpp
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(34,25): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(61,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(66,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(71,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(103,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(108,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(128,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Move.cpp
+  MoveStack.cpp
+  Piece.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 251 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  ChessCPP.vcxproj -> C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\Release\ChessCPP.exe

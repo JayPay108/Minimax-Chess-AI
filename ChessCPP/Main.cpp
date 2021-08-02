@@ -6,13 +6,13 @@
 
 void clearConsole();
 
+// TODO: clean up main, split into individual functions
 int main()
 {
 	Board board;
 	MiniMax minimax(DEPTH);
 	std::string input;
 	Move* move = new Move;
-	Move* lastMove;
 	bool undo = false;
 	bool gameOver = false;
 
@@ -37,7 +37,7 @@ int main()
 			std::cout << std::endl;
 		}
 
-		// std::cout << "Board value: " << board.evaluate() << std::endl << std::endl << std::endl;
+		// std::cout << "Board value: " << board.evaluate(0) << std::endl << std::endl << std::endl;
 
 		board.print();
 
@@ -75,19 +75,32 @@ int main()
 		else
 		{
 			board.makeMove(move);
+
+			if (board.isCheckMate(!board.m_cTurn))
+			{
+				std::cout << std::endl << std::endl << "You checkmated Craig! 200 IQ play!" << std::endl << std::endl;
+				board.print();
+				return 0;
+			}
 			
 			board.swapTurn();
 			std::cout << "Craig is thinking...";
 			
 			move = new Move();
 			move = minimax.getNextMove(&board);
-			board.makeMove(move);
-			board.swapTurn();
 
 			for (int i = 0; i < 20; i++)
 			{
 				std::cout << '\b' << ' ' << '\b';
 			}
+			if (move == nullptr)
+			{
+				std::cout << "stalemate?" << std::endl;	// debug
+				return 0;
+			}
+
+			board.makeMove(move);
+			board.swapTurn();
 			
 		}
 	}
