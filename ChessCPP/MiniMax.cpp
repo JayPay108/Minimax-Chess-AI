@@ -1,5 +1,6 @@
 #include "MiniMax.h"
 #include <iostream>
+#include <ctime>
 
 MiniMax::MiniMax(int depth)
 {
@@ -9,12 +10,23 @@ MiniMax::MiniMax(int depth)
 	m_iBeta = 9999999;
 
 	m_mBestMove = nullptr;
+	m_iMovesSearched = 0;
+	m_fTimeSearched = 0;
 }
 
 Move* MiniMax::getNextMove(Board* board)
 {
+	m_iMovesSearched = 0;
 	m_mBestMove = nullptr;
+
+	std::time_t startTime, endTime;
+	std::time(&startTime);
+
 	searchMoves(board, true, m_iDepth, -9999999, 9999999);
+
+	std::time(&endTime);
+	m_fTimeSearched = endTime - startTime;
+
 	return m_mBestMove;
 }
 
@@ -49,6 +61,8 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		currentMove = moves->removeMove();
 		while (currentMove != nullptr)
 		{
+			m_iMovesSearched += 1;
+
 			board->makeMove(currentMove);
 
 			if (board->isCheck(!board->m_cTurn))
@@ -91,6 +105,8 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		currentMove = moves->removeMove();
 		while (currentMove != nullptr)
 		{
+			m_iMovesSearched += 1;
+
 			board->makeMove(currentMove);
 
 			if (board->isCheck(board->m_cTurn))

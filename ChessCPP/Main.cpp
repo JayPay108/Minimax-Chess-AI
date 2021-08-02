@@ -15,6 +15,7 @@ int main()
 	Move* move = new Move;
 	bool undo = false;
 	bool gameOver = false;
+	int movesSearched;
 
 	while (true)
 	{
@@ -22,6 +23,7 @@ int main()
 
 		if (board.m_msMoveHistory.m_iSize > 0)
 		{
+			std::cout << "Craig searched through " << minimax.m_iMovesSearched << " moves in " << minimax.m_fTimeSearched << " seconds" << std::endl;
 			std::cout << "Craig's move: " << board.m_msMoveHistory.m_pHead->toString() << std::endl;
 
 			if (board.isCheckMate(board.m_cTurn))

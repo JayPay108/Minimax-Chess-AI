@@ -7,6 +7,8 @@ public:
 	MiniMax(int depth);
 	Move* getNextMove(Board* board);
 	
+	int m_iMovesSearched;
+	float m_fTimeSearched;
 	int m_iDepth;
 	int m_iAlpha;
 	int m_iBeta;
