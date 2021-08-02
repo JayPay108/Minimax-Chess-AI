@@ -7,6 +7,7 @@ Move::Move()
 	m_pcAttackedPiece = nullptr;
 	m_pcPromotedFrom = nullptr;
 	m_bCastle = false;
+	value = 0;
 
 	m_pNext = nullptr;
 }
@@ -18,6 +19,7 @@ Move::Move(Index startIndex, Index endIndex)
 	m_pcAttackedPiece = nullptr;
 	m_pcPromotedFrom = nullptr;
 	m_bCastle = false;
+	value = 0;
 
 	m_pNext = nullptr;
 }
@@ -29,6 +31,7 @@ Move::Move(Index startIndex, Index endIndex, Piece* attackedPiece)
 	m_pcAttackedPiece = attackedPiece;
 	m_pcPromotedFrom = nullptr;
 	m_bCastle = false;
+	value = 0;
 
 	m_pNext = nullptr;
 }

@@ -12,6 +12,7 @@ public:
 	Move* removeMove();
 	bool hasMove(Move* move);
 	void empty();
+	void sort();
 
 	void print(); // debug function
 

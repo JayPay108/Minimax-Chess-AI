@@ -20,6 +20,7 @@ public:
 	Piece* m_pcAttackedPiece;
 	Piece* m_pcPromotedFrom;
 	bool m_bCastle;
+	int value;
 
 	Move* m_pNext;
 };

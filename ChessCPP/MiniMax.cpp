@@ -102,6 +102,21 @@ int MiniMax::searchMoves(Board* board, bool maximize, int currentDepth, int alph
 		MoveStack* moves = new MoveStack;
 		board->getMoves(board->m_cTurn, moves);
 
+		// Sorting moves at shallow depth
+		if (currentDepth == m_iDepth)
+		{
+			currentMove = moves->m_pHead;
+			while (currentMove != nullptr)
+			{
+				board->makeMove(new Move(currentMove->m_iStartIndex, currentMove->m_iEndIndex));
+				currentMove->value = board->evaluate(board->m_cTurn);
+				delete board->undoMove();
+
+				currentMove = currentMove->m_pNext;
+			}
+			moves->sort();
+		}
+
 		currentMove = moves->removeMove();
 		while (currentMove != nullptr)
 		{

@@ -18,6 +18,6 @@ C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(144,13): w
   Piece.cpp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 252 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 201 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   ChessCPP.vcxproj -> C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\Release\ChessCPP.exe

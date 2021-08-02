@@ -65,6 +65,41 @@ void MoveStack::empty()
 	}
 }
 
+void MoveStack::sort()
+{
+	bool sorted = false;
+	while (!sorted)
+	{
+		Move* previousMove = nullptr;
+		Move* currentMove = m_pHead;
+		Move* nextMove;
+
+		sorted = true;
+		while (currentMove != nullptr)
+		{
+			nextMove = currentMove->m_pNext;
+			if (nextMove != nullptr && (nextMove->value > currentMove->value))
+			{
+				currentMove->m_pNext = nextMove->m_pNext;
+				nextMove->m_pNext = currentMove;
+				if (previousMove == nullptr)
+				{
+					m_pHead = nextMove;
+				}
+				else
+				{
+					previousMove->m_pNext = nextMove;
+				}
+
+				sorted = false;
+			}
+
+			previousMove = currentMove;
+			currentMove = nextMove;
+		}
+	}
+}
+
 
 // DEBUG FUNCTION
 #include <iostream>

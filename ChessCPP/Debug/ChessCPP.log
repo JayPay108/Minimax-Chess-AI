@@ -1,9 +1,13 @@
-﻿  Board.cpp
-C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\Board.cpp(305,27): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-  Main.cpp
-  MiniMax.cpp
-  Move.cpp
+﻿  MiniMax.cpp
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(28,28): warning C4244: '=': conversion from 'time_t' to 'float', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(46,25): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(75,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(80,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(85,12): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(112,41): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(134,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(139,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\ChessCPP\MiniMax.cpp(159,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   MoveStack.cpp
-  Piece.cpp
   Generating Code...
   ChessCPP.vcxproj -> C:\Users\jaypa\Desktop\Coding\C++\CHESS\ChessCPP\Debug\ChessCPP.exe
