@@ -97,6 +97,23 @@ void Board::makeMove(Move* move)
 		addPiece('q', movedPiece->m_iIndex, movedPiece->m_cColor);
 		move->m_pcPromotedFrom = movedPiece;
 	}
+
+	// Castling
+	else if (move->m_bCastle || (toLower(movedPiece->m_cName) == 'k' && abs(move->m_iStartIndex.m_iCol - move->m_iEndIndex.m_iCol) == 2))
+	{
+		move->m_bCastle = true;
+
+		if (movedPiece->m_iIndex.m_iCol == 2)
+		{
+			m_pcBoard[movedPiece->m_iIndex.m_iRow][0] = nullptr;
+			addPiece('r', Index(movedPiece->m_iIndex.m_iRow, 3), movedPiece->m_cColor);
+		}
+		else
+		{
+			m_pcBoard[movedPiece->m_iIndex.m_iRow][7] = nullptr;
+			addPiece('r', Index(movedPiece->m_iIndex.m_iRow, 5), movedPiece->m_cColor);
+		}
+	}
 	
 	m_msMoveHistory.addMove(move);
 }
@@ -120,6 +137,21 @@ Move* Board::undoMove()
 	else
 	{
 		movedPiece = m_pcBoard[lastMove->m_iEndIndex.m_iRow][lastMove->m_iEndIndex.m_iCol];
+	}
+
+	// Castling
+	if (lastMove->m_bCastle)
+	{
+		if (movedPiece->m_iIndex.m_iCol == 2)
+		{
+			m_pcBoard[movedPiece->m_iIndex.m_iRow][3] = nullptr;
+			addPiece('r', Index(movedPiece->m_iIndex.m_iRow, 0), movedPiece->m_cColor);
+		}
+		else
+		{
+			m_pcBoard[movedPiece->m_iIndex.m_iRow][5] = nullptr;
+			addPiece('r', Index(movedPiece->m_iIndex.m_iRow, 7), movedPiece->m_cColor);
+		}
 	}
 
 	m_pcBoard[lastMove->m_iStartIndex.m_iRow][lastMove->m_iStartIndex.m_iCol] = movedPiece;

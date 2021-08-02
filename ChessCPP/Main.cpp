@@ -101,7 +101,6 @@ int main()
 
 			board.makeMove(move);
 			board.swapTurn();
-			
 		}
 	}
 

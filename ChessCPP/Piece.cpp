@@ -377,6 +377,25 @@ void King::getMoves(MoveStack* moves, Piece* board[][8])
 
 		moves->addMove(new Move(startPos, endPos));
 	}
+
+	if (m_iNumOfMoves == 0 && board[m_iIndex.m_iRow][0] != nullptr && board[m_iIndex.m_iRow][0]->m_iNumOfMoves == 0)
+	{
+		if (board[m_iIndex.m_iRow][1] == nullptr && board[m_iIndex.m_iRow][2] == nullptr && board[m_iIndex.m_iRow][3] == nullptr)
+		{
+			Move* move = new Move(startPos, Index(m_iIndex.m_iRow, 2));
+			move->m_bCastle = true;
+			moves->addMove(move);
+		}
+	}
+	if (m_iNumOfMoves == 0 && board[m_iIndex.m_iRow][7] != nullptr && board[m_iIndex.m_iRow][7]->m_iNumOfMoves == 0)
+	{
+		if (board[m_iIndex.m_iRow][5] == nullptr && board[m_iIndex.m_iRow][6] == nullptr)
+		{
+			Move* move = new Move(startPos, Index(m_iIndex.m_iRow, 6));
+			move->m_bCastle = true;
+			moves->addMove(move);
+		}
+	}
 }
 
 float King::getPieceSquareValue()
